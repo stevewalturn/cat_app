@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
-
 import 'startup_viewmodel.dart';
 
 class StartupView extends StackedView<StartupViewModel> {
@@ -14,43 +11,52 @@ class StartupView extends StackedView<StartupViewModel> {
     StartupViewModel viewModel,
     Widget? child,
   ) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'CatApp',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Loading ...', style: TextStyle(fontSize: 16)),
-                Gap(10),
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    color: Colors.black,
-                    strokeWidth: 6,
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                '🐱 Virtual Pet 🐱',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 32),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Pet Name',
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter your pet\'s name',
+                ),
+                onChanged: viewModel.updatePetName,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: viewModel.isBusy ? null : viewModel.createPet,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 48,
+                    vertical: 16,
                   ),
-                )
-              ],
-            ),
-          ],
+                ),
+                child: viewModel.isBusy
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Start Game',
+                        style: TextStyle(fontSize: 18),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   @override
-  StartupViewModel viewModelBuilder(
-    BuildContext context,
-  ) =>
-      StartupViewModel();
-
-  @override
-  void onViewModelReady(StartupViewModel viewModel) => SchedulerBinding.instance
-      .addPostFrameCallback((timeStamp) => viewModel.runStartupLogic());
+  StartupViewModel viewModelBuilder(BuildContext context) => StartupViewModel();
 }
