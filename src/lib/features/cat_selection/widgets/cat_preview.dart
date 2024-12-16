@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:cat_app/constants/pet_states.dart';
 import 'package:cat_app/constants/cat_colors.dart';
 
-class PetAnimation extends StatelessWidget {
-  final PetState state;
-  final String name;
+class CatPreview extends StatelessWidget {
   final CatColor color;
+  final String name;
 
-  const PetAnimation({
+  const CatPreview({
     Key? key,
-    required this.state,
-    required this.name,
     required this.color,
+    required this.name,
   }) : super(key: key);
 
   @override
@@ -26,8 +23,8 @@ class PetAnimation extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: Text(
-            state == PetState.dead ? '💀' : color.emoji,
-            style: const TextStyle(fontSize: 100),
+            color.emoji,
+            style: const TextStyle(fontSize: 80),
           ),
         ),
         const SizedBox(height: 16),
@@ -40,12 +37,11 @@ class PetAnimation extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          state.description,
+          'A ${color.name.toLowerCase()} cat',
           style: const TextStyle(
             fontSize: 16,
             color: Colors.grey,
           ),
-          textAlign: TextAlign.center,
         ),
       ],
     );

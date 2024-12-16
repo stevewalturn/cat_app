@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cat_app/models/pet.dart';
 import 'package:cat_app/constants/pet_states.dart';
+import 'package:cat_app/constants/cat_colors.dart';
 
 class PetService {
   Pet? _currentPet;
@@ -9,8 +10,8 @@ class PetService {
 
   Pet? get currentPet => _currentPet;
 
-  void initializePet(String name) {
-    _currentPet = Pet.initial(name);
+  void initializePet(String name, CatColor color) {
+    _currentPet = Pet.initial(name, color);
     _startDecayTimer();
   }
 

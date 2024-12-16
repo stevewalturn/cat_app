@@ -36,7 +36,8 @@ class StartupView extends StackedView<StartupViewModel> {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: viewModel.isBusy ? null : viewModel.createPet,
+                onPressed:
+                    viewModel.isBusy ? null : viewModel.continueToCatSelection,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 48,
@@ -46,7 +47,7 @@ class StartupView extends StackedView<StartupViewModel> {
                 child: viewModel.isBusy
                     ? const CircularProgressIndicator()
                     : const Text(
-                        'Start Game',
+                        'Continue',
                         style: TextStyle(fontSize: 18),
                       ),
               ),

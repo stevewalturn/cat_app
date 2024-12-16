@@ -4,7 +4,7 @@ import 'package:cat_app/services/pet_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends ReactiveViewModel {
   final _petService = locator<PetService>();
   final _dialogService = locator<DialogService>();
 
@@ -46,8 +46,5 @@ class HomeViewModel extends BaseViewModel {
   }
 
   @override
-  void dispose() {
-    _petService.dispose();
-    super.dispose();
-  }
+  List<ReactiveServiceMixin> get reactiveServices => [_petService];
 }
