@@ -1,35 +1,53 @@
-import 'package:cat_app/app/app.bottomsheets.dart';
-import 'package:cat_app/app/app.dialogs.dart';
 import 'package:cat_app/app/app.locator.dart';
+import 'package:cat_app/models/pet.dart';
+import 'package:cat_app/services/pet_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
+  final _petService = locator<PetService>();
   final _dialogService = locator<DialogService>();
-  final _bottomSheetService = locator<BottomSheetService>();
 
-  String get counterLabel => 'Counter is: $_counter';
+  Pet? get pet => _petService.currentPet;
 
-  int _counter = 0;
-
-  void incrementCounter() {
-    _counter++;
-    rebuildUi();
+  void feed() {
+    if (pet == null) {
+      _showError('No pet exists! Please restart the app.');
+      return;
+    }
+    _petService.feed();
+    notifyListeners();
   }
 
-  void showDialog() {
-    _dialogService.showCustomDialog(
-      variant: DialogType.infoAlert,
-      title: 'Steve Rocks!',
-      description: 'Give steve $_counter stars on Github',
+  void play() {
+    if (pet == null) {
+      _showError('No pet exists! Please restart the app.');
+      return;
+    }
+    _petService.play();
+    notifyListeners();
+  }
+
+  void sleep() {
+    if (pet == null) {
+      _showError('No pet exists! Please restart the app.');
+      return;
+    }
+    _petService.sleep();
+    notifyListeners();
+  }
+
+  void _showError(String message) {
+    _dialogService.showDialog(
+      title: 'Error',
+      description: message,
+      barrierDismissible: true,
     );
   }
 
-  void showBottomSheet() {
-    _bottomSheetService.showCustomSheet(
-      variant: BottomSheetType.notice,
-      title: 'title',
-      description: 'desc',
-    );
+  @override
+  void dispose() {
+    _petService.dispose();
+    super.dispose();
   }
 }

@@ -1,20 +1,42 @@
 import 'package:cat_app/app/app.locator.dart';
 import 'package:cat_app/app/app.router.dart';
+import 'package:cat_app/services/pet_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class StartupViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
+  final _petService = locator<PetService>();
+  final _dialogService = locator<DialogService>();
 
-  // Place anything here that needs to happen before we get into the application
-  // ignore: strict_raw_type
-  Future runStartupLogic() async {
-    // ignore: inference_failure_on_instance_creation
-    await Future.delayed(const Duration(seconds: 1));
+  String _petName = '';
+  String get petName => _petName;
 
-    // This is where you can make decisions on where your app should navigate when
-    // you have custom startup logic
+  void updatePetName(String value) {
+    _petName = value;
+    notifyListeners();
+  }
 
-    await _navigationService.replaceWithHomeView();
+  Future<void> createPet() async {
+    if (_petName.trim().isEmpty) {
+      await _dialogService.showDialog(
+        title: 'Invalid Name',
+        description: 'Please enter a name for your pet.',
+      );
+      return;
+    }
+
+    setBusy(true);
+    try {
+      _petService.initializePet(_petName);
+      await _navigationService.replaceWithHomeView();
+    } catch (e) {
+      await _dialogService.showDialog(
+        title: 'Error',
+        description: 'Failed to create pet. Please try again.',
+      );
+    } finally {
+      setBusy(false);
+    }
   }
 }
