@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:cat_app/constants/pet_states.dart';
+import 'package:cat_app/constants/cat_colors.dart';
 
 class Pet extends Equatable {
   final String name;
@@ -8,6 +9,7 @@ class Pet extends Equatable {
   final int energy;
   final int health;
   final PetState state;
+  final CatColor color;
   final DateTime lastFed;
   final DateTime lastPlayed;
   final DateTime lastSlept;
@@ -19,6 +21,7 @@ class Pet extends Equatable {
     required this.energy,
     required this.health,
     required this.state,
+    required this.color,
     required this.lastFed,
     required this.lastPlayed,
     required this.lastSlept,
@@ -31,6 +34,7 @@ class Pet extends Equatable {
     int? energy,
     int? health,
     PetState? state,
+    CatColor? color,
     DateTime? lastFed,
     DateTime? lastPlayed,
     DateTime? lastSlept,
@@ -42,13 +46,14 @@ class Pet extends Equatable {
       energy: energy ?? this.energy,
       health: health ?? this.health,
       state: state ?? this.state,
+      color: color ?? this.color,
       lastFed: lastFed ?? this.lastFed,
       lastPlayed: lastPlayed ?? this.lastPlayed,
       lastSlept: lastSlept ?? this.lastSlept,
     );
   }
 
-  factory Pet.initial(String name) {
+  factory Pet.initial(String name, CatColor color) {
     final now = DateTime.now();
     return Pet(
       name: name,
@@ -57,6 +62,7 @@ class Pet extends Equatable {
       energy: 100,
       health: 100,
       state: PetState.normal,
+      color: color,
       lastFed: now,
       lastPlayed: now,
       lastSlept: now,
@@ -71,6 +77,7 @@ class Pet extends Equatable {
         energy,
         health,
         state,
+        color,
         lastFed,
         lastPlayed,
         lastSlept,

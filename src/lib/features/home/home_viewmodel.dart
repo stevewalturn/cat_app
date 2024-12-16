@@ -4,11 +4,12 @@ import 'package:cat_app/services/pet_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends ReactiveViewModel {
   final _petService = locator<PetService>();
   final _dialogService = locator<DialogService>();
 
-  Pet? get pet => _petService.currentPet;
+  Pet? get pet => _currentPet;
+  Pet? get _currentPet => _petService.currentPet;
 
   void feed() {
     if (pet == null) {
@@ -16,7 +17,6 @@ class HomeViewModel extends BaseViewModel {
       return;
     }
     _petService.feed();
-    notifyListeners();
   }
 
   void play() {
@@ -25,7 +25,6 @@ class HomeViewModel extends BaseViewModel {
       return;
     }
     _petService.play();
-    notifyListeners();
   }
 
   void sleep() {
@@ -34,7 +33,6 @@ class HomeViewModel extends BaseViewModel {
       return;
     }
     _petService.sleep();
-    notifyListeners();
   }
 
   void _showError(String message) {
@@ -46,8 +44,5 @@ class HomeViewModel extends BaseViewModel {
   }
 
   @override
-  void dispose() {
-    _petService.dispose();
-    super.dispose();
-  }
+  List<ListenableServiceMixin> get listenableServices => [_petService];
 }

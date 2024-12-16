@@ -1,27 +1,6 @@
 enum PetState { normal, happy, sad, sleeping, sick, hungry, playing, dead }
 
 extension PetStateExtension on PetState {
-  String get emoji {
-    switch (this) {
-      case PetState.normal:
-        return '😺';
-      case PetState.happy:
-        return '😸';
-      case PetState.sad:
-        return '😿';
-      case PetState.sleeping:
-        return '😴';
-      case PetState.sick:
-        return '🤒';
-      case PetState.hungry:
-        return '🍽️';
-      case PetState.playing:
-        return '🎮';
-      case PetState.dead:
-        return '💀';
-    }
-  }
-
   String get description {
     switch (this) {
       case PetState.normal:

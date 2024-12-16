@@ -33,6 +33,7 @@ class HomeView extends StackedView<HomeViewModel> {
               PetAnimation(
                 state: pet.state,
                 name: pet.name,
+                color: pet.color,
               ),
               const SizedBox(height: 32),
               PetStatusBar(pet: pet),
