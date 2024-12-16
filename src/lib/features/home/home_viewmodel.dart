@@ -8,7 +8,8 @@ class HomeViewModel extends ReactiveViewModel {
   final _petService = locator<PetService>();
   final _dialogService = locator<DialogService>();
 
-  Pet? get pet => _petService.currentPet;
+  Pet? get pet => _currentPet;
+  Pet? get _currentPet => _petService.currentPet;
 
   void feed() {
     if (pet == null) {
@@ -16,7 +17,6 @@ class HomeViewModel extends ReactiveViewModel {
       return;
     }
     _petService.feed();
-    notifyListeners();
   }
 
   void play() {
@@ -25,7 +25,6 @@ class HomeViewModel extends ReactiveViewModel {
       return;
     }
     _petService.play();
-    notifyListeners();
   }
 
   void sleep() {
@@ -34,7 +33,6 @@ class HomeViewModel extends ReactiveViewModel {
       return;
     }
     _petService.sleep();
-    notifyListeners();
   }
 
   void _showError(String message) {
@@ -46,5 +44,5 @@ class HomeViewModel extends ReactiveViewModel {
   }
 
   @override
-  List<ReactiveServiceMixin> get reactiveServices => [_petService];
+  List<ListenableServiceMixin> get listenableServices => [_petService];
 }

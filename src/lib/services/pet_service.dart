@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:cat_app/models/pet.dart';
 import 'package:cat_app/constants/pet_states.dart';
 import 'package:cat_app/constants/cat_colors.dart';
+import 'package:stacked/stacked.dart';
 
-class PetService {
+class PetService with ListenableServiceMixin {
   Pet? _currentPet;
   Timer? _decayTimer;
   final _decayInterval = const Duration(minutes: 1);
@@ -13,6 +14,7 @@ class PetService {
   void initializePet(String name, CatColor color) {
     _currentPet = Pet.initial(name, color);
     _startDecayTimer();
+    notifyListeners();
   }
 
   void _startDecayTimer() {
@@ -48,6 +50,7 @@ class PetService {
       health: newHealth,
       state: newState,
     );
+    notifyListeners();
   }
 
   PetState _determineState(int hunger, int happiness, int energy, int health) {
@@ -72,6 +75,7 @@ class PetService {
       lastFed: DateTime.now(),
     );
     _updatePetStats();
+    notifyListeners();
   }
 
   void play() {
@@ -91,6 +95,7 @@ class PetService {
       state: PetState.playing,
     );
     _updatePetStats();
+    notifyListeners();
   }
 
   void sleep() {
@@ -106,10 +111,12 @@ class PetService {
       state: PetState.sleeping,
     );
     _updatePetStats();
+    notifyListeners();
   }
 
   void dispose() {
     _decayTimer?.cancel();
     _currentPet = null;
+    notifyListeners();
   }
 }
