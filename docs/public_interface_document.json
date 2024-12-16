@@ -1,7 +1,7 @@
 {
   "package_name": "com.product_1.cat_app",
   "project_description": "The Flutter project is a virtual pet application that allows users to adopt and care for a digital pet. The app features a startup screen, a home screen, and various interactions such as feeding, playing, and putting the pet to sleep. It also includes custom dialogs and bottom sheets for displaying important information and alerts to the user.",
-  "architecture_overview": "The application follows the Stacked architecture pattern, which separates the concerns of the UI, view models, and services. It uses the Stacked package for state management, routing, and dependency injection. The codebase is organized into feature-based folders, with each feature containing its own view, view model, and supporting widgets. The app also utilizes a centralized service for managing the pet's state and behavior.",
+  "architecture_overview": "The application follows the Stacked architecture pattern, which separates the concerns of the UI, view models, and services. It uses the Stacked package for state management, routing, and dependency injection. The codebase is organized into feature-based folders, with each feature containing its own view, view model, and supporting widgets. The app also utilizes a centralized PetService for managing the pet's state and behavior.",
   "files": [
     {
       "name": "lib/app/app.dart",
