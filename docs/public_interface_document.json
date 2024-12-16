@@ -1,6 +1,6 @@
 {
   "package_name": "com.product_1.cat_app",
-  "project_description": "The Flutter project is a virtual pet application that allows users to adopt and care for a digital pet. The app features a startup screen, a home screen, and various interactions such as feeding, playing, and putting the pet to sleep. It also includes custom dialogs and bottom sheets for displaying important information and alerts to the user.",
+  "project_description": "The Flutter project is a virtual pet application that allows users to adopt and care for a digital pet. The app features a home screen that displays the pet's current state, including its hunger, happiness, energy, and health levels. Users can interact with the pet by feeding, playing, and putting it to sleep. The application also includes custom dialogs and bottom sheets for displaying important information and alerts to the user.",
   "architecture_overview": "The application follows the Stacked architecture pattern, which separates the concerns of the UI, view models, and services. It uses the Stacked package for state management, routing, and dependency injection. The codebase is organized into feature-based folders, with each feature containing its own view, view model, and supporting widgets. The app also utilizes a centralized PetService for managing the pet's state and behavior.",
   "files": [
     {
@@ -604,6 +604,135 @@
         "flutter/material.dart",
         "stacked/stacked.dart",
         "stacked_services/stacked_services.dart"
+      ]
+    },
+    {
+      "name": "lib/features/cat_selection/widgets/cat_preview.dart",
+      "description": "The CatPreview widget is responsible for displaying a preview of a cat, including its color, name, and a brief description. This component is used within the cat selection feature to allow the user to preview and select different cats.",
+      "class_diagram": "@startuml\nclass CatPreview {\n  -CatColor color\n  -String name\n  +build(BuildContext): Widget\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Builds the UI for the CatPreview widget, displaying the cat's color, name, and a brief description.",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "cat_app/constants/cat_colors.dart"
+      ]
+    },
+    {
+      "name": "lib/features/cat_selection/widgets/cat_color_option.dart",
+      "description": "The `CatColorOption` widget is responsible for rendering a single color option for a cat in a cat selection screen. It provides a visual representation of the color, along with its name and an indication of whether it is currently selected.",
+      "class_diagram": "@startuml\nclass CatColorOption {\n  +CatColor color\n  +bool isSelected\n  +VoidCallback onTap\n  +build(BuildContext context): Widget\n}\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Builds the widget's UI, which includes a circular container displaying the color's emoji and name, and a border around the container to indicate whether the color is selected.",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "Widget"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "cat_app/constants/cat_colors.dart"
+      ]
+    },
+    {
+      "name": "lib/features/cat_selection/cat_selection_viewmodel.dart",
+      "description": "This file contains the `CatSelectionViewModel` class, which is responsible for managing the user experience and business logic related to selecting a cat for adoption in a pet adoption application.",
+      "class_diagram": "@startuml\nclass CatSelectionViewModel {\n  - _navigationService: NavigationService\n  - _petService: PetService\n  - _dialogService: DialogService\n  - _selectedColor: CatColor\n  + selectedColor: CatColor\n  + availableColors: List<CatColor>\n  + selectColor(CatColor color): void\n  + createPet(String name): Future<void>\n}\n@enduml",
+      "methods": [
+        {
+          "name": "selectColor",
+          "description": "Allows the user to select a color for the cat they want to adopt.",
+          "parameters": [
+            "CatColor color"
+          ],
+          "return_type": "void"
+        },
+        {
+          "name": "createPet",
+          "description": "Validates the pet's name, creates the pet with the selected color, and navigates the user to the home view.",
+          "parameters": [
+            "String name"
+          ],
+          "return_type": "Future<void>"
+        }
+      ],
+      "dependencies": [
+        "package:stacked/stacked.dart",
+        "package:cat_app/app/app.locator.dart",
+        "package:cat_app/app/app.router.dart",
+        "package:cat_app/constants/cat_colors.dart",
+        "package:cat_app/services/pet_service.dart",
+        "package:stacked_services/stacked_services.dart"
+      ]
+    },
+    {
+      "name": "lib/features/cat_selection/cat_selection_view.dart",
+      "description": "The `CatSelectionView` is responsible for displaying a user interface that allows the user to select a color for their cat. It provides a preview of the selected cat and a grid of color options for the user to choose from. Once the user selects a color, they can create a new pet with the specified name and color.",
+      "class_diagram": "@startuml\nclass CatSelectionView {\n  +String petName\n  +build(BuildContext, CatSelectionViewModel, Widget?): Widget\n  +viewModelBuilder(BuildContext): CatSelectionViewModel\n}\n\nclass CatSelectionViewModel {\n  +selectedColor: Color\n  +availableColors: List<Color>\n  +isBusy: bool\n  +selectColor(Color): void\n  +createPet(String): void\n}\n\nclass CatPreview {\n  +Color color\n  +String name\n  +build(BuildContext): Widget\n}\n\nclass CatColorOption {\n  +Color color\n  +bool isSelected\n  +onTap(): void\n  +build(BuildContext): Widget\n}\n\nCatSelectionView --> CatSelectionViewModel\nCatSelectionView --> CatPreview\nCatSelectionView --> CatColorOption\n@enduml",
+      "methods": [
+        {
+          "name": "build",
+          "description": "Builds the user interface for the CatSelectionView, including the cat preview, color options grid, and create pet button.",
+          "parameters": [
+            "BuildContext",
+            "CatSelectionViewModel",
+            "Widget?"
+          ],
+          "return_type": "Widget"
+        },
+        {
+          "name": "viewModelBuilder",
+          "description": "Provides an instance of the CatSelectionViewModel, which handles the application logic for the cat selection feature.",
+          "parameters": [
+            "BuildContext"
+          ],
+          "return_type": "CatSelectionViewModel"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "package:stacked/stacked.dart",
+        "cat_app/features/cat_selection/widgets/cat_preview.dart",
+        "cat_app/features/cat_selection/widgets/cat_color_option.dart",
+        "cat_selection_viewmodel.dart"
+      ]
+    },
+    {
+      "name": "lib/constants/cat_colors.dart",
+      "description": "This Dart file defines a set of constants and utility functions related to cat colors. It provides a centralized and reusable way to represent and work with different cat coat colors in the application.",
+      "class_diagram": "@startuml\nclass CatColor {\n  +orange: CatColor\n  +black: CatColor\n  +white: CatColor\n  +grey: CatColor\n  +brown: CatColor\n  +calico: CatColor\n}\n\nclass CatColorExtension {\n  +name: String\n  +emoji: String\n  +color: Color\n}\n@enduml",
+      "methods": [
+        {
+          "name": "name",
+          "description": "Returns the human-readable name of the cat color",
+          "parameters": null,
+          "return_type": "String"
+        },
+        {
+          "name": "emoji",
+          "description": "Returns an emoji representing the cat color",
+          "parameters": null,
+          "return_type": "String"
+        },
+        {
+          "name": "color",
+          "description": "Returns the Material Color representing the cat color",
+          "parameters": null,
+          "return_type": "Color"
+        }
+      ],
+      "dependencies": [
+        "package:flutter/material.dart"
       ]
     }
   ],
